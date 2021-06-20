@@ -4,17 +4,116 @@
 
 <head>
 	<title>80's Clicker</title>
+	
+	<style>
+		.sectionLeft
+		{
+			float: left;
+			width: 80%;
+		}
+		.sectionRight
+		{
+			float: right;
+			width: 20%;
+		}
+		.scoreContainer
+		{
+			background-color: rgb(238, 238, 238);
+			width: 50%;
+			padding: 10px;
+			border-radius: 5px;
+			font-size: 24px;
+			font-weight: bold;
+		}
+		.clickerContainer img
+		{
+			position: relative;
+			transition: all .2s ease-in-out;
+		}
+		.clickerContainer img:hover
+		{
+			transform: scale(1.05);
+		}
+		.clickerContainer img:active
+		{
+			transform: scale(0.90);
+		}
+		.shopButton
+		{
+			background-color: #b5b5b5;
+			transition: all .2s ease-in-out;
+			border-radius: 5px;
+			width: 100%;
+			margin: 10px 0px 10px 0px;
+		}
+		.shopButton:hover
+		{
+			background-color: #c7c7c7;
+			transition: all .2s ease-in-out;
+		}
+		.shopButton #image
+		{
+			width: 25%;
+		}
+		.shopButton img
+		{
+			height: 64px;
+		}
+		.shopButton #nameAndCost p
+		{
+			margin: 0px;
+			width: 60%;
+		}
+		.shopButton #nameAndCost p:first-of-type
+		{
+			font-size: 24px;
+		}
+		.shopButton #amount
+		{
+			font-size: 48px;
+			color: #595959;
+			font-family: roboto;
+			width: 15%;
+		}
+	</style>
 </head>
 
 <body>
-	<span id="score">0</span> Tunes Obtained
+	<div class="sectionLeft">
+		<center>
+			<div class="scoreContainer">
+				<span id="score">0</span> Tunes Obtained<br>
+				<span id="scorepersecond">0</span> FHPS (Frizzy Hair Per Second)
+			</div>
+			<br>
+			<div class="clickerContainer">
+				<img src="images/record.png" height="512px" width="512px" onclick="addToScore(clickingPower)">
+			</div>
+		</center>
+	</div>
 	
-	<img src="images/record.png" height="512px" width="512px" onclick="addToScore(clickingPower)">
-	
-	<span id="scorepersecond">0</span> FHPS (Frizzy Hair Per Second)
-	
-	<button onclick="buyCursor()">Cursor [<span id="cursorcost">15</span>] -- <span id="cursors">0</span</button>
-	<button onclick="buyGrandma()">Grandma [<span id="grandmacost">100</span>] -- <span id="grandmas">0</span</button>
+	<div class="sectionRight">
+		<table class="shopButton" onClick="buyCursor()">
+			<tr>
+				<td id="image"><img src="images/cursor.png"></td>
+				<td id="nameAndCost">
+					<p>Cursors</p>
+					<p><span id="cursorcost">15</span> Tunes</p>
+				</td>
+				<td id="amount"><span id="cursors">0</span></td>
+			</tr>
+		</table>
+		<table class="shopButton" onClick="buyWorkout()">
+			<tr>
+				<td id="image"><img src="images/vhs.png"></td>
+				<td id="nameAndCost">
+					<p>Workout Tapes</p>
+					<p><span id="workoutcost">100</span> Tunes</p>
+				</td>
+				<td id="amount"><span id="workouts">0</span></td>
+			</tr>
+		</table>
+	</div>
 	
 	<script>
 		var score = 0;
@@ -22,8 +121,8 @@
 		
 		var cursorCost = 15;
 		var cursors = 0;
-		var grandmaCost = 100;
-		var grandmas = 0;
+		var workoutCost = 100;
+		var workouts = 0;
 		
 		function buyCursor()
 		{
@@ -39,16 +138,16 @@
 			}
 		}
 		
-		function buyGrandma()
+		function buyWorkout()
 		{
-			if (score >= grandmaCost)
+			if (score >= workoutCost)
 			{
-				score = score - grandmaCost;
-				grandmas = grandmas + 1;
-				grandmaCost = Math.round(grandmaCost * 1.15);
+				score = score - workoutCost;
+				workouts = workouts + 1;
+				workoutCost = Math.round(workoutCost * 1.15);
 				document.getElementById("score").innerHTML = score;
-				document.getElementById("grandmacost").innerHTML = grandmaCost;
-				document.getElementById("grandmas").innerHTML = grandmas;
+				document.getElementById("workoutcost").innerHTML = workoutCost;
+				document.getElementById("workouts").innerHTML = workouts;
 				updateScorePerSecond();
 			}
 		}
@@ -61,14 +160,14 @@
 		
 		function updateScorePerSecond()
 		{
-			scorePerSecond = cursors + grandmas * 5;
+			scorePerSecond = cursors + workouts * 5;
 			document.getElementById("scorepersecond").innerHTML = scorePerSecond;
 		}
 		
 		setInterval(function()
 		{
 			score = score + cursors;
-			score = score + grandmas * 5;
+			score = score + workouts * 5;
 			document.getElementById("score").innerHTML = score;
 			
 			document.title = score + " Tunes - 80's Clicker";
